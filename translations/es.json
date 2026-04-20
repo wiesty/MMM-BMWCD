@@ -1,0 +1,19 @@
+{
+    "LOADING":           "Cargando datos del vehículo…",
+    "CONNECTION_ERROR":  "Error de conexión",
+    "MILEAGE":           "Kilometraje",
+    "RANGE":             "Autonomía",
+    "DOORS":             "Puertas",
+    "LOCKED":            "Bloqueado",
+    "UNLOCKED":          "Desbloqueado",
+    "BATTERY":           "Batería",
+    "FUEL":              "Combustible",
+    "PLUG":              "Cable de carga",
+    "CONNECTED":         "Conectado",
+    "DISCONNECTED":      "Desconectado",
+    "CHARGING":          "Cargando",
+    "CHARGING_ACTIVE":   "Cargando",
+    "CHARGING_REMAINING":"Cargando — {minutes} min restantes",
+    "RANGE_FUEL":        "Autonomía de combustible",
+    "TIRES":             "Presión de neumáticos"
+}

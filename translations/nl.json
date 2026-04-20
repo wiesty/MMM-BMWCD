@@ -1,0 +1,19 @@
+{
+    "LOADING":           "Voertuiggegevens laden…",
+    "CONNECTION_ERROR":  "Verbindingsfout",
+    "MILEAGE":           "Kilometerstand",
+    "RANGE":             "Rijbereik",
+    "DOORS":             "Deuren",
+    "LOCKED":            "Vergrendeld",
+    "UNLOCKED":          "Ontgrendeld",
+    "BATTERY":           "Accu",
+    "FUEL":              "Brandstof",
+    "PLUG":              "Laadkabel",
+    "CONNECTED":         "Verbonden",
+    "DISCONNECTED":      "Losgekoppeld",
+    "CHARGING":          "Opladen",
+    "CHARGING_ACTIVE":   "Opladen",
+    "CHARGING_REMAINING":"Opladen — nog {minutes} min",
+    "RANGE_FUEL":        "Brandstofbereik",
+    "TIRES":             "Bandenspanning"
+}

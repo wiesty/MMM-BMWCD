@@ -1,0 +1,75 @@
+.bmwcd-wrapper {
+    padding-bottom: 4px;
+}
+
+.bmwcd-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.bmwcd-img {
+    height: 128px;
+    opacity: 0.9;
+    flex-shrink: 0;
+}
+
+.bmwcd-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.bmwcd-title {
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.bmwcd-table td {
+    padding: 2px 0;
+}
+
+.bmwcd-table td:first-child {
+    padding-right: 20px;
+}
+
+.bmwcd-val {
+    white-space: nowrap;
+}
+
+.bmwcd-red { color: #f00; }
+.bmwcd-dim { color: #888; }
+
+.bmwcd-bar-bg {
+    display: inline-block;
+    width: 80px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-left: 8px;
+    overflow: hidden;
+}
+
+.bmwcd-bar-fill {
+    display: block;
+    height: 100%;
+    background: #fff;
+    border-radius: 3px;
+    transition: width 1s ease;
+}
+
+.bmwcd-bar-fill.bmwcd-dim { background: #888; }
+.bmwcd-bar-fill.bmwcd-red { background: #f00; }
+
+.bmwcd-tire-grid {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px 12px;
+    vertical-align: middle;
+}
+
+.bmwcd-tire-cell {
+    white-space: nowrap;
+}

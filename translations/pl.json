@@ -1,0 +1,19 @@
+{
+    "LOADING":           "Ładowanie danych pojazdu…",
+    "CONNECTION_ERROR":  "Błąd połączenia",
+    "MILEAGE":           "Przebieg",
+    "RANGE":             "Zasięg",
+    "DOORS":             "Drzwi",
+    "LOCKED":            "Zablokowane",
+    "UNLOCKED":          "Odblokowane",
+    "BATTERY":           "Akumulator",
+    "FUEL":              "Paliwo",
+    "PLUG":              "Kabel ładowania",
+    "CONNECTED":         "Podłączony",
+    "DISCONNECTED":      "Odłączony",
+    "CHARGING":          "Ładowanie",
+    "CHARGING_ACTIVE":   "Ładuje",
+    "CHARGING_REMAINING":"Ładuje — jeszcze {minutes} min",
+    "RANGE_FUEL":        "Zasięg na paliwie",
+    "TIRES":             "Ciśnienie w oponach"
+}

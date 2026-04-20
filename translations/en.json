@@ -1,0 +1,19 @@
+{
+    "LOADING":           "Loading vehicle data…",
+    "CONNECTION_ERROR":  "Connection error",
+    "MILEAGE":           "Mileage",
+    "RANGE":             "Range",
+    "DOORS":             "Doors",
+    "LOCKED":            "Locked",
+    "UNLOCKED":          "Unlocked",
+    "BATTERY":           "Battery",
+    "FUEL":              "Fuel",
+    "PLUG":              "Charge cable",
+    "CONNECTED":         "Connected",
+    "DISCONNECTED":      "Disconnected",
+    "CHARGING":          "Charging",
+    "CHARGING_ACTIVE":   "Charging",
+    "CHARGING_REMAINING":"Charging — {minutes} min left",
+    "RANGE_FUEL":        "Fuel range",
+    "TIRES":             "Tyre pressure"
+}

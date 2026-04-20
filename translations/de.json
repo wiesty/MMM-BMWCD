@@ -1,0 +1,19 @@
+{
+    "LOADING":           "Lade Fahrzeugdaten…",
+    "CONNECTION_ERROR":  "Verbindungsfehler",
+    "MILEAGE":           "Kilometerstand",
+    "RANGE":             "Reichweite",
+    "DOORS":             "Türen",
+    "LOCKED":            "Gesichert",
+    "UNLOCKED":          "Offen",
+    "BATTERY":           "Akku",
+    "FUEL":              "Kraftstoff",
+    "PLUG":              "Ladekabel",
+    "CONNECTED":         "Verbunden",
+    "DISCONNECTED":      "Getrennt",
+    "CHARGING":          "Ladevorgang",
+    "CHARGING_ACTIVE":   "Lädt",
+    "CHARGING_REMAINING":"Lädt — noch {minutes} min",
+    "RANGE_FUEL":        "Kraftstoffreichweite",
+    "TIRES":             "Reifendruck"
+}
