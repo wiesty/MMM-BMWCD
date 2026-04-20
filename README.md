@@ -176,3 +176,9 @@ Falls back to English if the configured language is not in this list.
 - [MagicMirror²](https://magicmirror.builders) v2.x
 - A running [bmw-cardata-bridge](https://github.com/wiesty/bmw-cardata-bridge) instance reachable from the MagicMirror host
 - Font Awesome icons (included in MagicMirror by default)
+
+---
+
+## License
+
+Apache 2.0 — this project is not affiliated with or endorsed by BMW Group.
