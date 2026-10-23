@@ -1,7 +1,9 @@
 namespace BMWCD {
     export function vehicleRows(v: Data, options: Options, locale: string, t: Translate): Row[] {
         const rows: Row[] = [];
-        const visible = (key: string) => !options.hiddenFields.includes(key);
+        const batteryElectric = isBatteryElectric(v);
+        const visible = (key: string) => !options.hiddenFields.includes(key)
+            && !(batteryElectric && ["fuel", "fuel_liters", "range_fuel"].includes(key));
         const add = (key: string, label: string, icon: string, value: string | null, tone: Tone = "bright") => {
             if (visible(key) && value !== null) rows.push({ key, label: t(label), icon, value, tone });
         };
@@ -16,7 +18,9 @@ namespace BMWCD {
         };
 
         add("mileage", "MILEAGE", "gauge-high", measure("mileage_km", "km", 0));
-        const mainRange = numeric(v, "range_km") ?? numeric(v, "range_electric_km") ?? numeric(v, "range_fuel_km");
+        const mainRange = batteryElectric
+            ? numeric(v, "range_electric_km") ?? numeric(v, "range_km")
+            : numeric(v, "range_km") ?? numeric(v, "range_electric_km") ?? numeric(v, "range_fuel_km");
         add("range", "RANGE", "road", mainRange === null ? null : `${number(mainRange, locale)} km`);
         for (const [key, field, label, icon] of [
             ["range_electric", "range_electric_km", "RANGE_ELECTRIC", "bolt"],

@@ -2,51 +2,7 @@ const assert = require("node:assert/strict");
 const test = require("node:test");
 const { readFileSync } = require("node:fs");
 const { join } = require("node:path");
-const { JSDOM } = require("jsdom");
-const { Script } = require("node:vm");
-
-// Every fixture is synthetic. Never capture BMW responses in this directory.
-const root = join(__dirname, "..");
-const en = JSON.parse(readFileSync(join(root, "translations/en.json"), "utf8"));
-const baseData = { mileage_km: 12345, last_update: "2000-01-02T12:00:00Z" };
-
-function harness(overrides = {}) {
-    const dom = new JSDOM("<!doctype html><html><body></body></html>", { runScripts: "outside-only" });
-    const { window } = dom;
-    const timers = new Map();
-    const logs = [];
-    let timerId = 0;
-    let definition;
-    window.setTimeout = (callback, delay) => {
-        const id = ++timerId;
-        timers.set(id, { callback, delay });
-        return id;
-    };
-    window.clearTimeout = id => timers.delete(id);
-    window.Log = { error: message => logs.push(message) };
-    window.config = { language: "en" };
-    window.Module = { register: (_name, value) => { definition = value; } };
-    const load = path => new Script(readFileSync(join(root, path), "utf8")).runInContext(dom.getInternalVMContext());
-    load("MMM-BMWCD.js");
-    const instance = Object.assign({}, definition, {
-        config: { ...definition.defaults, view: "full", ...overrides },
-        vehicleData: null, error: null, timer: null, controller: null,
-        locale: "en", suspended: false,
-        file: path => `/mirror/modules/MMM-BMWCD/${path}`,
-        translate: key => en[key] || key,
-        updates: 0,
-        updateDom(speed) { assert.equal(speed, 0); this.updates++; },
-    });
-    for (const script of instance.getScripts()) {
-        assert.ok(script.startsWith("/mirror/modules/MMM-BMWCD/lib/"));
-        load(script.slice("/mirror/modules/MMM-BMWCD/".length));
-    }
-    const render = (data = baseData, options = {}) => window.BMWCD.render({
-        data, error: null, options: instance.config, translate: instance.translate,
-        locale: "en", imageSrc: null, ...options,
-    });
-    return { window, instance, render, timers, logs, close: () => dom.window.close() };
-}
+const { harness, baseData, en, root } = require("./helpers.ts");
 
 test("legacy ICE, BEV and PHEV data render without duplicate ranges", () => {
     const h = harness();
@@ -367,6 +323,48 @@ test("every profile adapts ICE, BEV and PHEV fields including zero values and se
             assert.match(phev.querySelector('[data-field="range_fuel"]').textContent, /550 km/);
             assert.ok(phev.querySelector('[data-field="battery"]'));
             assert.ok(phev.querySelector('[data-field="fuel"]'));
+        } finally { h.close(); }
+    }
+});
+
+test("BEV metadata removes zero fuel readings while PHEV fuel and hidden field keys stay independent", () => {
+    for (const view of ["ultra", "minimal", "service", "full"]) {
+        const h = harness({ view });
+        const values = { ...baseData, range_km: 300, range_electric_km: 300, range_fuel_km: 0,
+            battery_soc_pct: 70, fuel_level_pct: 0, fuel_level_liters: 0 };
+        try {
+            for (const basic_data of [{ driveTrain: "BEV" }, { propulsionType: "EL" }]) {
+                const bev = h.render({ ...values, basic_data });
+                assert.equal(bev.querySelector('[data-field="fuel"],[data-field="fuel_liters"],[data-field="range_fuel"]'), null);
+                assert.ok(bev.querySelector('[data-field="battery"]'));
+                assert.match(bev.querySelector('[data-field="range"]').textContent, /300 km/);
+            }
+            const hybrid = { ...values, basic_data: { driveTrain: "PHEV", propulsionType: "EL" } };
+            assert.ok(h.render(hybrid).querySelector('[data-field="fuel"]'));
+            h.instance.config.hiddenFields = ["range_fuel"];
+            assert.ok(h.render(hybrid).querySelector('[data-field="fuel"]'));
+            assert.equal(h.render(hybrid).querySelector('[data-field="range_fuel"]'), null);
+            h.instance.config.hiddenFields = ["fuel"];
+            assert.equal(h.render(hybrid).querySelector('[data-field="fuel"]'), null);
+        } finally { h.close(); }
+    }
+});
+
+test("legacy BEVs with duplicated electric ranges hide fuel automatically; empty hybrids retain fuel", () => {
+    const legacy = { ...baseData, range_km: 275, range_electric_km: 275, range_fuel_km: 275,
+        battery_soc_pct: 70, fuel_level_pct: 0, fuel_level_liters: 0 };
+    for (const view of ["ultra", "minimal", "service", "full"]) {
+        const h = harness({ view });
+        try {
+            const bev = h.render(legacy);
+            assert.ok(bev.querySelector('[data-field="battery"]'));
+            assert.match(bev.querySelector('[data-field="range"]').textContent, /275 km/);
+            assert.equal(bev.querySelector('[data-field="fuel"],[data-field="fuel_liters"],[data-field="range_fuel"]'), null);
+            for (const data of [{ ...legacy, range_fuel_km: 0 },
+                { ...legacy, basic_data: { driveTrain: "PHEV" } }, { ...legacy, basic_data: { driveTrain: "ICE" } },
+                { ...legacy, battery_soc_pct: undefined, range_electric_km: undefined }]) {
+                assert.ok(h.render(data).querySelector('[data-field="fuel"]'));
+            }
         } finally { h.close(); }
     }
 });

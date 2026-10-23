@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1 — 2026-10-23
+
+- Hide fuel level, volume and range when BMW metadata identifies a battery-electric vehicle, while retaining zero fuel readings for hybrids and combustion vehicles.
+- Recognise the legacy bridge's duplicated-electric-range and zero-fuel pattern without requiring an extra configuration option.
+
 ## 1.3.0 — 2026-10-23
 
 - Remove vehicle-reading age warnings and the `staleAfter` option.

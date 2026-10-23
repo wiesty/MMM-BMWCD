@@ -33,6 +33,8 @@ The module uses MagicMirror's fonts and its `medium`, `small` and `xsmall` size 
 
 Drive-specific fields are automatic, as in the original module. ICE vehicles show fuel, BEVs show battery and charging information, and PHEVs show both when BMW supplies them. All views retain distinct electric/fuel ranges when they differ from the main range. An active charging session and plug state are also visible in compact views; absent fields are omitted and zero values are preserved. The ultra view omits services and vehicle details, uses the original small table typography and keeps the fuel value without a bar.
 
+When `basic_data.driveTrain` or `basic_data.propulsionType` identifies a BEV, fuel level, fuel volume and fuel range are omitted even if BMW supplies zero values for them. The electric range is preferred for the main BEV range. Explicit PHEV/HEV metadata retains fuel fields, including an empty tank. Older bridges without metadata are also recognised when battery data is present, the same positive electric range is duplicated into the main and fuel ranges, and fuel percentage and volume are both zero. A zero tank alone does not identify a BEV; ambiguous responses retain their supplied fields. No extra configuration is required.
+
 Service messages are prioritised by status (overdue, pending, other, OK). Standard BMW service titles have translated short names. The scrolling line honours reduced-motion preferences, and can also be paused with hover or keyboard focus.
 
 The header uses the newest timestamp from `telematic_data` when available. Hover over it for the gateway's poll time. With older bridges it shows the poll time instead. The newest reading does not imply every value is equally recent; enable `showTelematics` to inspect individual timestamps.
@@ -105,6 +107,8 @@ Requests are serial, time out and pause when the module is suspended. Authentica
 ### Field groups
 
 Use these keys in `hiddenFields`:
+
+`fuel` hides the fuel percentage (for example `0%`); `range_fuel` hides only the separate fuel range in km. To hide both, use `hiddenFields: ["fuel", "range_fuel"]`. The main range is controlled independently by `range`.
 
 | Key | Display |
 |-----|---------|
