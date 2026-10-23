@@ -11,7 +11,6 @@ Module.register("MMM-BMWCD", {
         updateInterval: 60 * 1000,
         requestTimeout: 10 * 1000,
         animationSpeed: 0,
-        staleAfter: 2 * 60 * 60 * 1000,
         hiddenFields: [],
         showLocation: false,
         showTelematics: false,
@@ -98,8 +97,7 @@ Module.register("MMM-BMWCD", {
             if (this.controller === controller) {
                 this.controller = null;
                 if (!this.suspended) {
-                    const signature = JSON.stringify([this.vehicleData, this.error,
-                        BMWCD.isStale(this.vehicleData, this.config.staleAfter)]);
+                    const signature = JSON.stringify([this.vehicleData, this.error]);
                     if (signature !== this.lastRenderSignature) {
                         this.lastRenderSignature = signature;
                         // A refresh must not hide/show the entire MagicMirror module.

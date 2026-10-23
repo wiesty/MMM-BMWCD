@@ -49,12 +49,6 @@ namespace BMWCD {
         return newest;
     }
 
-    export function isStale(data: Data | null, limit: number, now = Date.now()): boolean {
-        if (!data || limit <= 0) return false;
-        const time = timestamp(readingTime(data) || data.last_update);
-        return time !== null && now - time > limit;
-    }
-
     export function state(value: string | null, t: Translate): string {
         if (!value) return t("UNKNOWN");
         const states: Record<string, string> = {

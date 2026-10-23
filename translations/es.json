@@ -73,7 +73,6 @@
     "VEHICLE_READING": "Última medición del vehículo",
     "LAST_POLL": "Actualización de la pasarela",
     "SHOWING_CACHED": "Mostrando los últimos datos recibidos",
-    "STALE_DATA": "Las mediciones superan la antigüedad configurada",
     "SELECT_VIN": "Configura un VIN para una pasarela con varios vehículos",
     "AUTH_ERROR": "Acceso denegado – comprueba la clave API",
     "VEHICLE_NOT_FOUND": "Vehículo o endpoint no encontrado – comprueba el VIN y la URL",

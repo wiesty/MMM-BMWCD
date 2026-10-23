@@ -4,7 +4,7 @@ declare namespace BMWCD {
     type Tone = "bright" | "dimmed" | "bmwcd-red" | "bmwcd-green";
 
     interface Options {
-        view: "minimal" | "service" | "full";
+        view: "ultra" | "minimal" | "service" | "full";
         bridgeUrl: string;
         vin: string | null;
         vehicleName: string | null;
@@ -14,7 +14,6 @@ declare namespace BMWCD {
         updateInterval: number;
         requestTimeout: number;
         animationSpeed: number;
-        staleAfter: number;
         hiddenFields: string[];
         showLocation: boolean;
         showTelematics: boolean;
@@ -40,7 +39,6 @@ declare namespace BMWCD {
         locale: string;
         translate: Translate;
         imageSrc: string | null;
-        now?: number;
     }
 
     interface ModuleInstance {

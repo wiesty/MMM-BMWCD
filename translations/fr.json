@@ -73,7 +73,6 @@
     "VEHICLE_READING": "Dernière mesure du véhicule",
     "LAST_POLL": "Mise à jour de la passerelle",
     "SHOWING_CACHED": "Affichage des dernières données reçues",
-    "STALE_DATA": "Les mesures dépassent la limite d’ancienneté configurée",
     "SELECT_VIN": "Configurer un VIN pour une passerelle avec plusieurs véhicules",
     "AUTH_ERROR": "Accès à la passerelle refusé – vérifier la clé API",
     "VEHICLE_NOT_FOUND": "Véhicule ou point d’accès introuvable – vérifier le VIN et l’URL",

@@ -18,21 +18,24 @@ Available values are shown automatically; unsupported values are omitted:
 - Optional location, altitude and heading
 - Optional list of **all populated telemetry descriptors**, with BMW units and source timestamps in the full view
 
-### Three views
+### Four views
 
 Set `view` to choose the display:
 
 | View | Display |
 |------|---------|
+| `"ultra"` | Original compact layout: image beside name and full date, followed by mileage, range, locks and fuel/battery rows |
 | `"minimal"` (default) | Mileage, range, battery/fuel and a combined closure/lock status |
 | `"service"` | Minimal view plus the next service, with further service messages in a scrolling line |
 | `"full"` | All available individual fields, service entries and vehicle details |
 
 The module uses MagicMirror's fonts and its `medium`, `small` and `xsmall` size classes. It has no widget background, card border or extra padding. Green indicates a complete, closed and locked vehicle; red indicates an open opening or unlocked vehicle. Incomplete readings stay neutral. No touch interaction is required to read service entries or details.
 
+Drive-specific fields are automatic, as in the original module. ICE vehicles show fuel, BEVs show battery and charging information, and PHEVs show both when BMW supplies them. All views retain distinct electric/fuel ranges when they differ from the main range. An active charging session and plug state are also visible in compact views; absent fields are omitted and zero values are preserved. The ultra view omits services and vehicle details, uses the original small table typography and keeps the fuel value without a bar.
+
 Service messages are prioritised by status (overdue, pending, other, OK). Standard BMW service titles have translated short names. The scrolling line honours reduced-motion preferences, and can also be paused with hover or keyboard focus.
 
-The header uses the newest timestamp from `telematic_data` when available. Hover over it for the gateway's poll time. With older bridges it shows the poll time instead. The newest reading does not imply every value is equally recent; enable `showTelematics` to inspect individual timestamps. Readings older than `staleAfter` show a warning.
+The header uses the newest timestamp from `telematic_data` when available. Hover over it for the gateway's poll time. With older bridges it shows the poll time instead. The newest reading does not imply every value is equally recent; enable `showTelematics` to inspect individual timestamps.
 
 Connection errors keep the last successfully received data on screen with a notice. Missing lock states appear as unknown. Both `SECURED` and `LOCKED` are recognised. Partial tyre readings show a dash for missing wheels.
 
@@ -81,7 +84,7 @@ The module requests `/vehicle` or `/vehicle/{vin}` from the gateway. It never ca
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `view` | `"minimal"` | `"minimal"`, `"service"` or `"full"` |
+| `view` | `"minimal"` | `"ultra"`, `"minimal"`, `"service"` or `"full"` |
 | `bridgeUrl` | `"http://192.168.1.1:8080"` | Base URL of the gateway; trailing slashes are accepted |
 | `vin` | `null` | Required for gateways tracking multiple vehicles |
 | `vehicleName` | `null` | Custom title; otherwise BMW model name, falling back to `My BMW` |
@@ -91,7 +94,6 @@ The module requests `/vehicle` or `/vehicle/{vin}` from the gateway. It never ca
 | `updateInterval` | `60000` | Delay in ms between gateway requests; minimum 1000 ms |
 | `requestTimeout` | `10000` | Abort a stalled request after this many ms |
 | `animationSpeed` | `0` | Legacy option; refreshes always use zero transition time |
-| `staleAfter` | `7200000` | Warn when the latest vehicle reading is older than this many ms; `0` disables the warning |
 | `hiddenFields` | `[]` | Field groups to hide; see below |
 | `showTireTargets` | `true` | Show actual / target pressures in bar |
 | `showLocation` | `false` | Show GPS coordinates, altitude and heading |
@@ -131,7 +133,7 @@ Service dates and CBS distance units are preserved; numeric distances use the di
 
 ## Vehicle images
 
-Set `vehicleImage` to display a large image above the title and metrics in any of the three views. Place your image in this module's folder and set `vehicleImage: "car.png"`. Paths such as `"/images/car.png"` refer to files served by the MagicMirror web server, rather than arbitrary filesystem paths. HTTP(S) image URLs are also supported. Broken images are hidden.
+Set `vehicleImage` to display a large image above the title and metrics, or a compact image beside the title in the ultra view. Place your image in this module's folder and set `vehicleImage: "car.png"`. Paths such as `"/images/car.png"` refer to files served by the MagicMirror web server, rather than arbitrary filesystem paths. HTTP(S) image URLs are also supported. Broken images are hidden.
 
 Use `imageHeight: 160` for a smaller image, or `imageHeight: 220` for the default limit. Each module instance can use its own value. The image fits the available width without cropping or stretching. Non-positive or invalid heights fall back to the default limit.
 

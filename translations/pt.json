@@ -73,7 +73,6 @@
     "VEHICLE_READING": "Última medição do veículo",
     "LAST_POLL": "Atualização do gateway",
     "SHOWING_CACHED": "A mostrar os últimos dados recebidos",
-    "STALE_DATA": "As medições excedem a antiguidade configurada",
     "SELECT_VIN": "Configure um VIN para um gateway com vários veículos",
     "AUTH_ERROR": "Acesso negado – verifique a chave API",
     "VEHICLE_NOT_FOUND": "Veículo ou endpoint não encontrado – verifique o VIN e o URL",

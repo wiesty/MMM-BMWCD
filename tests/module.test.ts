@@ -43,7 +43,7 @@ function harness(overrides = {}) {
     }
     const render = (data = baseData, options = {}) => window.BMWCD.render({
         data, error: null, options: instance.config, translate: instance.translate,
-        locale: "en", imageSrc: null, now: Date.parse(baseData.last_update), ...options,
+        locale: "en", imageSrc: null, ...options,
     });
     return { window, instance, render, timers, logs, close: () => dom.window.close() };
 }
@@ -120,15 +120,15 @@ test("all gateway and config strings render as text", () => {
     } finally { h.close(); }
 });
 
-test("source time detects old readings even with a recent gateway poll", () => {
-    const h = harness({ staleAfter: 60 * 60 * 1000 });
+test("source timestamps are displayed without age warnings; connection errors keep cached data", () => {
+    const h = harness();
     try {
         const dom = h.render({ ...baseData, telematic_data: {
             a: { value: "0", timestamp: "2000-01-01T12:00:00Z" },
             b: { value: "1", timestamp: "invalid" },
         } });
         assert.match(dom.querySelector(".bmwcd-updated").title, /Latest vehicle reading/);
-        assert.match(dom.querySelector(".bmwcd-notice").textContent, /older/);
+        assert.equal(dom.querySelector(".bmwcd-notice"), null);
         const cached = h.render(baseData, { error: "CONNECTION_ERROR" });
         assert.match(cached.textContent, /Showing last received data/);
         assert.ok(cached.querySelector('[data-field="mileage"]'));
@@ -330,4 +330,43 @@ test("services prioritise overdue entries and translate standard BMW titles to G
         assert.match(dom.querySelector(".bmwcd-ticker").textContent, /Einfahrkontrolle/);
         assert.doesNotMatch(dom.textContent, /Engine oil|running in check|note additional/);
     } finally { h.close(); }
+});
+
+test("ultra restores the original image-and-date header and four-row ICE table", () => {
+    const h = harness({ view: "ultra", imageHeight: 100 });
+    try {
+        const node = h.render({ ...closedVehicle, range_fuel_km: 400, fuel_level_pct: 50,
+            tire_pressure_fl_kpa: 230, service_messages: [{ title: "Test service" }] }, { imageSrc: "/test-car.png" });
+        assert.ok(node.querySelector(".bmwcd-header > img"));
+        assert.equal(node.querySelector("img").style.maxHeight, "100px");
+        assert.match(node.querySelector("time").textContent, /2000/);
+        assert.deepEqual([...node.querySelectorAll("tbody tr")].map(row => row.dataset.field), ["mileage", "range", "doors", "fuel"]);
+        assert.equal(node.querySelector(".bmwcd-metrics,.bmwcd-security,.bmwcd-services,.bmwcd-details"), null);
+        assert.equal(node.querySelector('[data-field="fuel"] .bmwcd-bar-bg'), null);
+    } finally { h.close(); }
+});
+
+test("every profile adapts ICE, BEV and PHEV fields including zero values and separate ranges", () => {
+    for (const view of ["ultra", "minimal", "service", "full"]) {
+        const h = harness({ view });
+        try {
+            const ice = h.render({ ...closedVehicle, range_fuel_km: 410, fuel_level_pct: 52 });
+            assert.match(ice.querySelector('[data-field="range"]').textContent, /410 km/);
+            assert.ok(ice.querySelector('[data-field="fuel"]'));
+            assert.equal(ice.querySelector('[data-field="battery"],[data-field="plug"],[data-field="range_fuel"]'), null);
+            const bev = h.render({ ...closedVehicle, range_electric_km: 0, battery_soc_pct: 0,
+                is_plugged_in: true, charging_status: "CHARGING", charging_time_remaining_min: 0 });
+            assert.match(bev.querySelector('[data-field="range"]').textContent, /0 km/);
+            assert.match(bev.querySelector('[data-field="battery"]').textContent, /0\s*%/);
+            assert.match(bev.querySelector('[data-field="charging"]').textContent, /0 min left/);
+            assert.ok(bev.querySelector('[data-field="plug"]'));
+            assert.equal(bev.querySelector('[data-field="fuel"],[data-field="range_fuel"]'), null);
+            const phev = h.render({ ...closedVehicle, range_km: 600, range_electric_km: 50,
+                range_fuel_km: 550, battery_soc_pct: 20, fuel_level_pct: 25 });
+            assert.match(phev.querySelector('[data-field="range_electric"]').textContent, /50 km/);
+            assert.match(phev.querySelector('[data-field="range_fuel"]').textContent, /550 km/);
+            assert.ok(phev.querySelector('[data-field="battery"]'));
+            assert.ok(phev.querySelector('[data-field="fuel"]'));
+        } finally { h.close(); }
+    }
 });

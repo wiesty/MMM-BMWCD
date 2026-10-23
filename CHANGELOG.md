@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 — 2026-10-23
+
+- Remove vehicle-reading age warnings and the `staleAfter` option.
+- Add an ultra-compact view based on the original image-and-table layout.
+- Retain distinct electric/fuel ranges, plug state and active charging information in compact views.
+
 ## 1.2.0 — 2026-10-23
 
 - Add minimal, service and full views using MagicMirror's native typography.

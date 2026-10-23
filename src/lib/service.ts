@@ -60,7 +60,7 @@ namespace BMWCD {
     }
 
     export function appendServices(wrapper: HTMLElement, v: Data, options: Options, t: Translate, locale: string): void {
-        if (options.view === "minimal" || options.hiddenFields.includes("service")) return;
+        if (options.view === "ultra" || options.view === "minimal" || options.hiddenFields.includes("service")) return;
         const messages = serviceMessages(v);
         if (!messages.length) return;
         const section = element("section", "bmwcd-services");

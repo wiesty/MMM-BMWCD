@@ -73,7 +73,6 @@
     "VEHICLE_READING": "Laatste voertuigmeting",
     "LAST_POLL": "Gateway-update",
     "SHOWING_CACHED": "Laatst ontvangen gegevens worden getoond",
-    "STALE_DATA": "Meetwaarden zijn ouder dan de ingestelde grens",
     "SELECT_VIN": "Stel een VIN in voor een gateway met meerdere voertuigen",
     "AUTH_ERROR": "Toegang geweigerd – controleer de API-sleutel",
     "VEHICLE_NOT_FOUND": "Voertuig of endpoint niet gevonden – controleer VIN en URL",

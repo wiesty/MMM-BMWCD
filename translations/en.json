@@ -73,7 +73,6 @@
     "VEHICLE_READING": "Latest vehicle reading",
     "LAST_POLL": "Gateway update",
     "SHOWING_CACHED": "Showing last received data",
-    "STALE_DATA": "Vehicle readings are older than the configured limit",
     "SELECT_VIN": "Select a VIN for a gateway with multiple vehicles",
     "AUTH_ERROR": "Gateway access denied — check API key",
     "VEHICLE_NOT_FOUND": "Vehicle or endpoint not found — check VIN and URL",

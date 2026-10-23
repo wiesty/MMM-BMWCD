@@ -7,6 +7,11 @@
 }
 
 .bmwcd-view-full { width: 400px; }
+.bmwcd-view-ultra .bmwcd-img { width: 110px; max-width: 38%; margin: 0; flex-shrink: 0; }
+.bmwcd-view-ultra .bmwcd-header-text { flex-direction: column; align-items: flex-start; }
+.bmwcd-view-ultra .bmwcd-updated { white-space: normal; }
+.bmwcd-view-ultra .bmwcd-table { margin-top: 0; }
+.bmwcd-view-ultra .bmwcd-table td, .bmwcd-view-ultra .bmwcd-table th { padding-top: 2px; padding-bottom: 2px; }
 .bmwcd-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .bmwcd-img { display: block; width: 100%; height: auto; max-height: 220px; object-fit: contain; margin: 0 auto 12px; }
 .bmwcd-header-text { display: flex; flex: 1; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 10px; min-width: 0; }

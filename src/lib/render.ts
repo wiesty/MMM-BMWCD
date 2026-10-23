@@ -20,7 +20,7 @@ namespace BMWCD {
             });
             value.appendChild(lines);
         }
-        if (row.percent !== undefined) {
+        if (row.percent !== undefined && row.key !== "fuel") {
             const bar = element("span", "bmwcd-bar-bg");
             bar.setAttribute("aria-hidden", "true");
             const fill = element("span", `bmwcd-bar-fill ${row.tone || ""}`);
@@ -38,9 +38,25 @@ namespace BMWCD {
         wrapper.appendChild(node);
     }
 
+    function appendTable(wrapper: HTMLElement, rows: Row[], name: string): void {
+        if (!rows.length) return;
+        const table = element("table", "bmwcd-table small");
+        table.setAttribute("aria-label", name);
+        const body = element("tbody");
+        rows.forEach(row => body.appendChild(renderRow(row)));
+        table.appendChild(body);
+        wrapper.appendChild(table);
+    }
+
+    // As in the original module, optional BMW fields determine which drive data is shown.
+    function energyRows(rows: Row[], data: Data): Row[] {
+        return rows.filter(row => ["range_electric", "range_fuel", "plug"].includes(row.key)
+            || (row.key === "charging" && text(data, "charging_status")?.toUpperCase() === "CHARGING"));
+    }
+
     export function render(view: View): HTMLElement {
         const { data: v, options, translate: t, locale } = view;
-        const mode = ["minimal", "service", "full"].includes(options.view) ? options.view : "minimal";
+        const mode = ["ultra", "minimal", "service", "full"].includes(options.view) ? options.view : "minimal";
         const wrapper = element("div", `bmwcd-wrapper small bmwcd-view-${mode}`);
         if (!v) {
             notice(wrapper, t(view.error || "LOADING"));
@@ -56,13 +72,13 @@ namespace BMWCD {
                 image.style.maxHeight = `${options.imageHeight}px`;
             }
             image.onerror = () => image.remove();
-            wrapper.appendChild(image);
+            (mode === "ultra" ? header : wrapper).appendChild(image);
         }
         const heading = element("div", "bmwcd-header-text");
         heading.appendChild(element("h2", "small bold bright bmwcd-title", name));
         const reading = readingTime(v);
         const time = timestamp(reading || v.last_update);
-        const updated = element("time", "bmwcd-updated xsmall dimmed", time === null ? "—" : new Date(time).toLocaleTimeString(locale, {
+        const updated = element("time", "bmwcd-updated xsmall dimmed", mode === "ultra" ? date(reading || v.last_update, locale) : time === null ? "—" : new Date(time).toLocaleTimeString(locale, {
             hour: "2-digit", minute: "2-digit", hourCycle: "h23",
         }));
         if (time !== null) updated.dateTime = new Date(time).toISOString();
@@ -72,19 +88,15 @@ namespace BMWCD {
         wrapper.appendChild(header);
 
         if (view.error) notice(wrapper, `${t(view.error)} · ${t("SHOWING_CACHED")}`);
-        if (isStale(v, options.staleAfter, view.now)) {
-            notice(wrapper, t("STALE_DATA"));
-        }
         const rows = vehicleRows(v, options, locale, t);
-        appendMetrics(wrapper, rows);
-        appendSecurity(wrapper, v, options, t);
-        if (mode === "full") {
-            const table = element("table", "bmwcd-table small");
-            table.setAttribute("aria-label", name);
-            const body = element("tbody");
-            rows.filter(row => !isMetric(row)).forEach(row => body.appendChild(renderRow(row)));
-            table.appendChild(body);
-            wrapper.appendChild(table);
+        if (mode === "ultra") {
+            const essentials = new Set(["mileage", "range", "doors", "battery", "fuel",
+                ...energyRows(rows, v).map(row => row.key)]);
+            appendTable(wrapper, rows.filter(row => essentials.has(row.key)), name);
+        } else {
+            appendMetrics(wrapper, rows);
+            appendSecurity(wrapper, v, options, t);
+            appendTable(wrapper, mode === "full" ? rows.filter(row => !isMetric(row)) : energyRows(rows, v), name);
         }
         appendServices(wrapper, v, { ...options, view: mode }, t, locale);
         if (mode === "full") {

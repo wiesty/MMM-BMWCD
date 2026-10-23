@@ -73,7 +73,6 @@
     "VEHICLE_READING": "Letzter Fahrzeugmesswert",
     "LAST_POLL": "Gateway-Abruf",
     "SHOWING_CACHED": "Zeige zuletzt empfangene Daten",
-    "STALE_DATA": "Fahrzeugmesswerte sind älter als die eingestellte Grenze",
     "SELECT_VIN": "Bei mehreren Fahrzeugen eine VIN konfigurieren",
     "AUTH_ERROR": "Gateway-Zugriff verweigert – API-Key prüfen",
     "VEHICLE_NOT_FOUND": "Fahrzeug oder Endpunkt nicht gefunden – VIN und URL prüfen",

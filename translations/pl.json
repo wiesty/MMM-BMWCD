@@ -73,7 +73,6 @@
     "VEHICLE_READING": "Ostatni pomiar pojazdu",
     "LAST_POLL": "Aktualizacja bramki",
     "SHOWING_CACHED": "Wyświetlane są ostatnio odebrane dane",
-    "STALE_DATA": "Pomiary są starsze niż ustawiony limit",
     "SELECT_VIN": "Ustaw VIN dla bramki z wieloma pojazdami",
     "AUTH_ERROR": "Odmowa dostępu – sprawdź klucz API",
     "VEHICLE_NOT_FOUND": "Nie znaleziono pojazdu lub endpointu – sprawdź VIN i URL",
