@@ -1,75 +1,65 @@
+/* Typography, colours and size classes come from MagicMirror. */
 .bmwcd-wrapper {
-    padding-bottom: 4px;
+    width: 320px;
+    max-width: 100%;
+    text-align: left;
+    font-variant-numeric: tabular-nums;
 }
 
-.bmwcd-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 8px;
+.bmwcd-view-full { width: 400px; }
+.bmwcd-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.bmwcd-img { display: block; width: 100%; height: auto; max-height: 220px; object-fit: contain; margin: 0 auto 12px; }
+.bmwcd-header-text { display: flex; flex: 1; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 10px; min-width: 0; }
+.bmwcd-title { margin: 0; overflow-wrap: anywhere; }
+.bmwcd-updated { white-space: nowrap; }
+.bmwcd-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 12px; margin: 0 0 12px; }
+.bmwcd-metrics-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.bmwcd-metric { min-width: 0; }
+.bmwcd-metric-label { margin-bottom: 2px; }
+.bmwcd-metric dd { display: flex; flex-wrap: wrap; align-items: baseline; margin: 0; }
+.bmwcd-metric-unit { white-space: pre; }
+.bmwcd-security { display: flex; align-items: baseline; gap: 8px; }
+.bmwcd-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+.bmwcd-table td, .bmwcd-table th { padding: 3px 0; vertical-align: top; }
+.bmwcd-table th { padding-right: 12px; text-align: left; font-weight: inherit; }
+.bmwcd-table th i { display: inline-block; width: 20px; }
+.bmwcd-val { text-align: right; overflow-wrap: anywhere; }
+.bmwcd-red { color: #ff6b6b; }
+.bmwcd-green { color: #65d68a; }
+.bmwcd-bar-bg { display: inline-block; width: 48px; height: 4px; background: rgba(255, 255, 255, 0.18); border-radius: 2px; vertical-align: middle; margin-left: 6px; overflow: hidden; }
+.bmwcd-metric .bmwcd-bar-bg { display: block; margin: 4px 0 0; }
+.bmwcd-bar-fill { display: block; height: 100%; background: currentColor; }
+.bmwcd-bar-fill.dimmed { background: var(--color-text-dimmed, #666); }
+.bmwcd-bar-fill.bmwcd-red { background: #ff6b6b; }
+.bmwcd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; }
+.bmwcd-grid-cell { white-space: nowrap; }
+.bmwcd-notice { margin: 8px 0; color: #e6b75a; }
+.bmwcd-services, .bmwcd-details { margin-top: 16px; }
+.bmwcd-section-title { margin: 0 0 6px; }
+.bmwcd-service-focus { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-items: baseline; }
+.bmwcd-service-name { grid-column: 1 / -1; }
+.bmwcd-service-distance { grid-column: 2; grid-row: 2 / 4; }
+.bmwcd-service-caption { grid-column: 1; grid-row: 3; }
+.bmwcd-service-focus > .bmwcd-service-meta { grid-column: 1; grid-row: 2; }
+.bmwcd-service-list { padding: 0; margin: 12px 0 0; list-style: none; }
+.bmwcd-service-list li + li { margin-top: 10px; }
+.bmwcd-ticker { margin-top: 12px; overflow: hidden; }
+.bmwcd-ticker-track { display: flex; width: max-content; animation: bmwcd-service-scroll var(--bmwcd-scroll-duration, 90s) linear infinite; }
+.bmwcd-ticker-group { display: flex; align-items: baseline; gap: 32px; padding-right: 32px; }
+.bmwcd-ticker-item { display: flex; align-items: baseline; gap: 10px; white-space: nowrap; }
+.bmwcd-ticker:hover .bmwcd-ticker-track, .bmwcd-ticker:focus-within .bmwcd-ticker-track { animation-play-state: paused; }
+.bmwcd-ticker:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.bmwcd-metadata, .bmwcd-telematics { margin: 0; overflow-wrap: anywhere; }
+.bmwcd-metadata dd, .bmwcd-telematics dd { margin: 2px 0 8px; white-space: pre-wrap; }
+
+@keyframes bmwcd-service-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
 }
 
-.bmwcd-img {
-    height: 128px;
-    opacity: 0.9;
-    flex-shrink: 0;
-}
-
-.bmwcd-header-text {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.bmwcd-title {
-    font-size: 20px;
-    letter-spacing: 1px;
-}
-
-.bmwcd-table td {
-    padding: 2px 0;
-}
-
-.bmwcd-table td:first-child {
-    padding-right: 20px;
-}
-
-.bmwcd-val {
-    white-space: nowrap;
-}
-
-.bmwcd-red { color: #f00; }
-.bmwcd-dim { color: #888; }
-
-.bmwcd-bar-bg {
-    display: inline-block;
-    width: 80px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 3px;
-    vertical-align: middle;
-    margin-left: 8px;
-    overflow: hidden;
-}
-
-.bmwcd-bar-fill {
-    display: block;
-    height: 100%;
-    background: #fff;
-    border-radius: 3px;
-    transition: width 1s ease;
-}
-
-.bmwcd-bar-fill.bmwcd-dim { background: #888; }
-.bmwcd-bar-fill.bmwcd-red { background: #f00; }
-
-.bmwcd-tire-grid {
-    display: inline-grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px 12px;
-    vertical-align: middle;
-}
-
-.bmwcd-tire-cell {
-    white-space: nowrap;
+@media (prefers-reduced-motion: reduce) {
+    .bmwcd-ticker-track { animation: none; width: 100%; }
+    .bmwcd-ticker-group { display: grid; gap: 10px; padding: 0; }
+    .bmwcd-ticker-group[aria-hidden="true"] { display: none; }
+    .bmwcd-ticker-item { white-space: normal; flex-wrap: wrap; gap: 2px 10px; }
 }
